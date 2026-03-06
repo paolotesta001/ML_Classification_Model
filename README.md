@@ -128,6 +128,7 @@ The confusion matrix on the test set shows strong diagonal dominance, meaning mo
 Rows = Actual (Reale), Columns = Predicted (Predetto). Most errors involve confusion between acoustically similar species (e.g., HylaMinuta vs AdenomeraHylaedactylus, ScinaxRuber vs OsteocephalusOophagus).
 
 ### ROC Curves and AUC
+<img width="1702" height="533" alt="image" src="https://github.com/user-attachments/assets/a9121cf2-5b8d-4ee5-8361-5aa9ebce3d03" />
 
 Multiclass ROC curves (One-vs-All) were computed for both models:
 
