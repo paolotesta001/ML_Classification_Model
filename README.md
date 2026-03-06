@@ -84,6 +84,62 @@ A custom specificity function computes **True Negative Rate** for each class (TN
 
 Multiclass ROC curves are plotted using a One-vs-All strategy, with AUC computed per class and as a macro-average. This provides a threshold-independent evaluation of the model's discriminative ability for each species.
 
+## Results
+
+### Model Comparison
+
+The script trains two models sequentially: a standard **LogisticRegression** (lbfgs solver) and an **SGDClassifier** (log loss with warm start). The SGD model significantly outperforms the lbfgs baseline.
+
+#### LogisticRegression (lbfgs)
+
+| Split | Accuracy |
+|---|---|
+| Training | 84.64% |
+| Validation | 85.41% |
+| Test | 83.11% |
+
+#### SGDClassifier (SGD, 5000 epochs)
+
+| Split | Accuracy |
+|---|---|
+| Training | 98.84% |
+| Validation | 98.61% |
+| Test | 98.12% |
+
+The SGD model achieves near-perfect accuracy across all splits, with minimal gap between training and test performance, indicating no significant overfitting.
+
+### Confusion Matrix (Test Set — SGD Model)
+
+The confusion matrix on the test set shows strong diagonal dominance, meaning most species are correctly classified:
+
+|  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **0** | 135 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **1** | 0 | 695 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **2** | 0 | 0 | 108 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **3** | 0 | 4 | 0 | 58 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **4** | 0 | 0 | 0 | 1 | 86 | 7 | 0 | 1 | 0 | 0 |
+| **5** | 0 | 0 | 0 | 0 | 0 | 224 | 0 | 0 | 0 | 0 |
+| **6** | 0 | 0 | 0 | 1 | 0 | 0 | 49 | 4 | 0 | 0 |
+| **7** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 23 | 0 | 0 |
+| **8** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 13 | 0 |
+| **9** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 21 |
+
+Rows = Actual (Reale), Columns = Predicted (Predetto). Most errors involve confusion between acoustically similar species (e.g., HylaMinuta vs AdenomeraHylaedactylus, ScinaxRuber vs OsteocephalusOophagus).
+
+### ROC Curves and AUC
+
+Multiclass ROC curves (One-vs-All) were computed for both models:
+
+| Model | Macro-Average AUC |
+|---|---|
+| LogisticRegression (lbfgs) | 0.98 |
+| SGDClassifier (SGD) | 1.00 |
+
+**Per-class AUC (lbfgs model):** Most classes achieve AUC = 1.00, with the exceptions of HylaMinuta (0.91), HypsiboasCordobae (0.92), and OsteocephalusOophagus (0.99).
+
+**Per-class AUC (SGD model):** All classes achieve AUC = 1.00, indicating excellent discriminative ability across all species.
+
 ## How to Run
 
 ```bash
